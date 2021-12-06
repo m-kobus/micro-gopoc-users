@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/m-kobus/micro-gopoc-users/server"
+	"micro-gopoc-users/server"
 )
 
 func main() {
