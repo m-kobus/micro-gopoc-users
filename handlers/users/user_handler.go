@@ -1,13 +1,13 @@
 package users
 
 import (
-	"encoding/json"
-	"io/ioutil"
 	"net/http"
-	"os/user"
+
+	users "micro-gopoc-users/models/user"
+	services "micro-gopoc-users/services/users"
+	errors "micro-gopoc-users/utils/errors"
 
 	"github.com/gin-gonic/gin"
-	"micro-gopoc-users/services/users"
 )
 
 func Search(c *gin.Context) {
@@ -15,11 +15,14 @@ func Search(c *gin.Context) {
 }
 
 func CreateUser(c *gin.Context) {
-	u := user.User{}
-	
+	u := users.User{}
+
 	// fastest way
-	if err := c.ShouldBindJSON(&u)
-	
+	if err := c.ShouldBindJSON(&u); err != nil {
+		c.JSON(http.StatusBadRequest, errors.NewBadRequestError("Invalid json body"))
+		return
+	}
+
 	// slower hand-made
 	// b, err := ioutil.ReadAll(c.Request.Body)
 	// if err != nil {
@@ -34,10 +37,8 @@ func CreateUser(c *gin.Context) {
 
 	r, err := services.CreateUser(u)
 	if err != nil {
-		log.Println(err)
-		return
+		c.JSON(err.Code, err)
 	}
-
 	c.JSON(http.StatusCreated, r)
 }
 
