@@ -8,6 +8,7 @@ import (
 	errors "micro-gopoc-users/utils/errors"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 )
 
 func Search(c *gin.Context) {
@@ -23,18 +24,6 @@ func CreateUser(c *gin.Context) {
 		return
 	}
 
-	// slower hand-made
-	// b, err := ioutil.ReadAll(c.Request.Body)
-	// if err != nil {
-	// 	log.Println(err)
-	// 	return
-	// }
-
-	// if err := json.Unmarshal(b, &u) {
-	// 	log.Println(err)
-	// 	return
-	// }
-
 	r, err := services.CreateUser(u)
 	if err != nil {
 		c.JSON(err.Code, err)
@@ -43,5 +32,16 @@ func CreateUser(c *gin.Context) {
 }
 
 func GetUser(c *gin.Context) {
-	c.JSON(http.StatusNotImplemented, gin.H{"message": "to be continiue"})
+	// func Parse(s string) (UUID, error)
+	guid, perr := uuid.Parse(c.Param("user_id"))
+	if perr != nil {
+		c.JSON(http.StatusBadRequest, errors.NewBadRequestError("Cannot parse given user_id"))
+		return
+	}
+
+	r, err := services.GetUser(guid)
+	if err != nil {
+		c.JSON(err.Code, err)
+	}
+	c.JSON(http.StatusOK, r)
 }

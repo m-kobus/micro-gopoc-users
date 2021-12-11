@@ -6,7 +6,12 @@ POST http://localhost:8080/user HTTP/1.1
 content-type: application/json
 
 {
+    "user_id": "f4f45802-9ace-47a8-915a-e2b12d7e24f9",
     "first_name": "Mike",
     "last_name": "Munciello",
     "email": "mike.munciello@gmail.com"
 }
+
+###
+
+GET http://localhost:8080/users/00000000-0000-0000-0000-000000000000 HTTP/1.1
