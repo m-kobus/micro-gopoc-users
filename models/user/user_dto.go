@@ -3,7 +3,6 @@ package users
 import (
 	"micro-gopoc-users/utils/errors"
 	"strings"
-	"time"
 
 	"github.com/google/uuid"
 )
@@ -13,7 +12,7 @@ type User struct {
 	FirstName   string    `json:"first_name"`
 	LastName    string    `json:"last_name"`
 	Email       string    `json:"email"`
-	DateCreated time.Time `json:"date_created"`
+	DateCreated string    `json:"date_created"`
 }
 
 func (u *User) Validate() *errors.RestError {

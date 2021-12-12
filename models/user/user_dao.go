@@ -2,6 +2,7 @@ package users
 
 import (
 	"fmt"
+	"micro-gopoc-users/utils/dates"
 	"micro-gopoc-users/utils/errors"
 
 	"github.com/google/uuid"
@@ -35,6 +36,9 @@ func (u *User) Save() *errors.RestError {
 		}
 		return errors.NewBadRequestError(fmt.Sprintf("User with id:%d already saved", u.Id))
 	}
+
+	u.DateCreated = dates.GetCurrentDateTimeString()
+
 	usersDB[u.Id] = u
 	return nil
 }
